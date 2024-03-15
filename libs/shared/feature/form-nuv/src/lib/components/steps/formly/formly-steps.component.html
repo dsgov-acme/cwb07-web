@@ -1,0 +1,105 @@
+<ng-container [ngSwitch]="stepperMode">
+  <ng-container *ngSwitchCase="formStateStepperMode.Steps" [ngTemplateOutlet]="editTemplate"></ng-container>
+  <ng-container *ngSwitchCase="formStateStepperMode.Inline" [ngTemplateOutlet]="reviewTemplate"></ng-container>
+  <ng-container *ngSwitchDefault>{{stepperMode}} mode not implemented</ng-container>
+</ng-container>
+<ng-template #editTemplate>
+  <nuverial-stepper
+    ariaLabel="stepper"
+    #stepper
+    [allowStepTraversal]="formContext === formStateContext.AdminBuilder"
+    [model]="model"
+    [modelSnapshot]="modelSnapshot"
+    [steps]="steps"
+    (saveAndContinue)="onSave('stepChange', $event)"
+    (stepSelected)="updateModeByStep($event)"
+  >
+    <ng-template *ngFor="let step of field.fieldGroup; trackBy: trackByFn; index as i" [nuverialStepperKey]="step.props?.['stepKey']" let-form>
+      <ng-container [ngTemplateOutlet]="formErrorsTemplate"> </ng-container>
+      <ng-container *ngIf="step.props?.['stepKey'] !== confirmationStepKey; else confirmationTemplate">
+        <h1>{{step.props?.label}}</h1>
+        <formly-field [field]="step" @fadeInOut></formly-field>
+      </ng-container>
+      <ng-template #confirmationTemplate>
+        <section class="confirmation-template">
+          <h1>{{ step.props?.label }}</h1>
+          <p>Please review and make sure all details are correct.</p>
+          <nuverial-accordion [multiExpansion]="true" [panelList]="confirmationPanelList">
+            <ng-template #body let-panel>
+              <div class="confirmation-panel-container">
+                <ng-container *ngFor="let stepPanel of field.fieldGroup; trackBy: trackByFn">
+                  <formly-field class="step-container" *ngIf="panel.id === stepPanel.props?.['stepKey']" [field]="stepPanel"></formly-field>
+                </ng-container>
+                <nuverial-button ariaLabel="edit" (click)="goToStepByKey(panel.id)" buttonStyle="icon">
+                  <nuverial-icon [outlined]="true" iconName="edit"></nuverial-icon>
+                </nuverial-button>
+              </div>
+            </ng-template>
+          </nuverial-accordion>
+        </section>
+      </ng-template>
+    </ng-template>
+  </nuverial-stepper>
+
+  <ng-container [ngSwitch]="formContext">
+    <ng-container *ngSwitchCase="formStateContext.AdminBuilder" [ngTemplateOutlet]="adminBuilderActionsTemplate"></ng-container>
+    <ng-container *ngSwitchCase="formStateContext.PublicPortal" [ngTemplateOutlet]="publicPortalActionsTemplate"></ng-container>
+    <ng-container *ngSwitchCase="formStateContext.IntakeModal" [ngTemplateOutlet]="intakeModalActionsTemplate"></ng-container>
+    <ng-container *ngSwitchDefault>Validation/Save logic not yet implemented for this workflow</ng-container>
+  </ng-container>
+
+  <ng-template #adminBuilderActionsTemplate>
+    <section class="validate-form-button">
+      <nuverial-button ariaLabel="Validate form" (click)="onSave('validate')" buttonStyle="outlined"> VALIDATE FORM </nuverial-button>
+    </section>
+  </ng-template>
+
+  <ng-template #publicPortalActionsTemplate>
+    <ng-container *ngIf="field.fieldGroup">
+      <nuverial-footer-actions [buttonsDisabled]="updatingTransaction" [footerActions]="footerActions" (actionSelected)="onActionClick($event)">
+      </nuverial-footer-actions>
+    </ng-container>
+  </ng-template>
+
+  <ng-template #intakeModalActionsTemplate>
+    <ng-container *ngIf="modalActions$ | async as modalActions">
+      <nuverial-footer-actions
+        class="display-in-modal"
+        [buttonsDisabled]="updatingTransaction"
+        [footerActions]="modalActions"
+        (actionSelected)="onActionClick($event)"
+      >
+      </nuverial-footer-actions
+    ></ng-container>
+  </ng-template>
+</ng-template>
+
+<ng-template #reviewTemplate>
+  <section class="review-template">
+    <ng-container [ngTemplateOutlet]="formErrorsTemplate"> </ng-container>
+    <nuverial-accordion [multiExpansion]="true" [panelList]="reviewModePanelList">
+      <ng-template #body let-panel>
+        <div class="review-panel-container">
+          <ng-container *ngFor="let stepPanel of field.fieldGroup; trackBy: trackByFn">
+            <formly-field class="step-container" *ngIf="panel.id === stepPanel.props?.['stepKey']" [field]="stepPanel"></formly-field>
+          </ng-container>
+        </div>
+      </ng-template>
+    </nuverial-accordion>
+  </section>
+
+  <ng-container *ngIf="mode === formStateMode.Edit && formContext === formStateContext.AgencyDetails">
+    <nuverial-footer-actions [buttonsDisabled]="updatingTransaction" [footerActions]="agencyEditActions" (actionSelected)="onActionClick($event)">
+    </nuverial-footer-actions>
+  </ng-container>
+</ng-template>
+
+<ng-template #formErrorsTemplate>
+  <div class="form-errors-wrapper" *ngIf="{formErrors: formErrors$ | async, isModalOpen: isModalOpen$ | async} as errorData">
+    <nuverial-form-errors
+      *ngIf="errorData.formErrors?.length && (errorData.isModalOpen && formContext === formStateContext.IntakeModal || !errorData.isModalOpen && formContext !== formStateContext.IntakeModal)"
+      [formErrors]="errorData?.formErrors || []"
+      tabindex="0"
+    ></nuverial-form-errors>
+  </div>
+</ng-template>

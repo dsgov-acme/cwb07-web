@@ -1,0 +1,4 @@
+<nuverial-breadcrumb class="fullscreen" [breadCrumbs]="breadCrumbs"></nuverial-breadcrumb>
+<ng-container *ngIf="(loadTransactionDetails$ | async)">
+  <router-outlet></router-outlet>
+</ng-container>

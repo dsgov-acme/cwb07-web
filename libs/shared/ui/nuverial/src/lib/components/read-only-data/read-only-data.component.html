@@ -1,0 +1,11 @@
+<div class="component-container" [ngStyle]="flexStyle">
+  <span *ngIf="label" [class]="labelClasses">{{ label + " " }}</span>
+
+  <ng-container *ngIf="formatType === 'richText'">
+    <nuverial-rich-text-viewer [content]="value"></nuverial-rich-text-viewer>
+  </ng-container>
+
+  <ng-container *ngIf="formatType !== 'richText'">
+    <div class="value-container" [ngClass]="{'bold': formatBold, 'italic': formatItalic}">{{formattedValue}}</div>
+  </ng-container>
+</div>

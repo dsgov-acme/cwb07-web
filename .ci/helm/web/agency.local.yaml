@@ -1,0 +1,27 @@
+net:
+  host: 'agency.cwb07.test'
+
+firebase:
+  project: "cwb07-dev"
+
+environmentJSON: {
+  authenticationConfiguration: {
+    firebaseConfiguration: {
+      firebase: {
+        apiKey: "AIzaSyCjj-dDYFg2dstZzb9FkWnb28yS-4UtAQk",
+        authDomain: "cwb07-dev.firebaseapp.com",
+      },
+      tenantId: 'agency-portal-9x97m',
+    },
+    sessionExpiration: {
+      idleTimeSeconds: 1800,
+      sessionTimeSeconds: 64800,
+    },
+  },
+  googlePlacesApiConfiguration: {
+    googleApiKey: 'AIzaSyAyKj3__yRLQ0u95nQSzeSWq3NZAgPlr_U',
+  },
+  httpConfiguration: {
+    baseUrl: 'http://api.cwb07.test',
+  },
+}

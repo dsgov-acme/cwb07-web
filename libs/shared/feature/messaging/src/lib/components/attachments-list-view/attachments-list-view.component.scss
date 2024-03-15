@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  margin-top: 0.5rem;
+
+  .attachments {
+    &__view-attachments {
+      .attachment_header {
+        margin: 0;
+        font-weight: var(--theme-typography-font-weight-mid);
+        position: absolute;
+        top: 2rem;
+        left: 17px;
+        font-size: var(--theme-typography-font-size-normal);
+      }
+
+      position: relative;
+    }
+
+    &__container {
+      cursor: default;
+      flex-wrap: wrap;
+      display: inline-flex;
+      gap: 15px;
+      background-color: var(--theme-color-m3-neutral-99);
+      padding: 1rem;
+      margin-top: 1rem;
+      padding-top: 3rem;
+    }
+  }
+}

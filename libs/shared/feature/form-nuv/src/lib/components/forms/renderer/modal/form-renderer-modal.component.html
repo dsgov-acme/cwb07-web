@@ -1,0 +1,7 @@
+<div class="modal-header">
+  <nuverial-button ariaLabel="Close" buttonStyle="icon" mat-dialog-close><nuverial-icon [outlined]="true" iconName="close" /></nuverial-button>
+</div>
+
+<form *ngIf="fields$ | async as fields" [formGroup]="form">
+  <formly-form [fields]="fields" [form]="form" [model]="model$ | async" [options]="options" (modelChange)="onModelChange($event)"></formly-form>
+</form>

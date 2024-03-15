@@ -1,0 +1,29 @@
+<div class="attachment__card">
+  <ng-container *ngTemplateOutlet="preview ? viewPreview: viewDefault"></ng-container>
+</div>
+
+<ng-template #viewDefault>
+  <div class="attachment__default">
+    <nuverial-icon iconName="description"></nuverial-icon>
+    <a (click)="requestDownload()" (keyup.enter)="requestDownload()" tabindex="0"> {{attachmentName || attachmentId}} </a>
+    <br />
+  </div>
+</ng-template>
+
+<ng-template #viewPreview let-attachment="attachment" let-index="index">
+  <div class="attachment__preview">
+    <img
+      class="preview-image"
+      *ngIf="previewSource !== 'error'"
+      [src]="previewSource"
+      (click)="requestDownload()"
+      (error)="previewSource = 'error'"
+      (keyup.enter)="requestDownload()"
+      alt="Document preview"
+      tabindex="0"
+    />
+    <div class="no-preview" *ngIf="previewSource === 'error'">
+      <ng-container *ngTemplateOutlet="viewDefault"></ng-container>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,34 @@
+<div class="attachments__view-attachments" *ngIf="attachments.length > 0">
+  <div
+    class="attachments__container"
+    *ngIf="!showPreview || (filePreviews$ | async) as previews"
+    (click)="onClick($event)"
+    (keyup.enter)="onClick($event)"
+    tabindex="0"
+  >
+    <p class="attachment_header">Attachments:</p>
+    <ng-container *ngFor="let attachment of attachments; index as index; trackBy:trackByFn">
+      <ng-container *ngTemplateOutlet="showPreview ? viewPreview : viewAttachments; context:{attachment, index, previews: previews}"></ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #viewAttachments let-attachment="attachment" let-index="index">
+  <nuverial-attachment-card
+    [attachmentId]="attachment"
+    [attachmentName]="attachmentNames[attachment]"
+    (downloadRequested)="downloadFile(attachment)"
+  ></nuverial-attachment-card>
+</ng-template>
+
+<ng-template #viewPreview let-attachment="attachment" let-index="index" let-previews="previews">
+  <div class="attachments__preview">
+    <nuverial-attachment-card
+      [attachmentId]="attachment"
+      [attachmentName]="attachmentNames[attachment]"
+      [preview]="true"
+      [previewSource]="previews[attachmentNames[attachment]]"
+      (downloadRequested)="downloadFile(attachment)"
+    ></nuverial-attachment-card>
+  </div>
+</ng-template>

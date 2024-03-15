@@ -1,0 +1,36 @@
+<ng-container [ngSwitch]="mode">
+  <ng-container *ngSwitchCase="formStateMode.Edit" [ngTemplateOutlet]="editTemplate"></ng-container>
+  <ng-container *ngSwitchCase="formStateMode.Review" [ngTemplateOutlet]="reviewTemplate"></ng-container>
+  <ng-container *ngSwitchDefault>{{mode}} mode not implemented</ng-container>
+</ng-container>
+
+<!-- hidden fields (no type) for the start/end keys, so that they are populated in the formly model -->
+<formly-field *ngFor="let f of field.fieldGroup; trackBy: trackByFn" [field]="f"></formly-field>
+
+<ng-template #editTemplate>
+  <nuverial-date-range-picker
+    [ariaDescribedBy]="props.ariaDescribedBy || ''"
+    [ariaLabel]="props.ariaLabel || ''"
+    [disabled]="props.disabled!"
+    [displayError]="props.displayError || false"
+    [endDatePlaceholder]="props.endDatePlaceholder || ''"
+    [formControl]="dateControl"
+    [hint]="props.hint || ''"
+    [label]="props.label || ''"
+    [maxDate]="props.maxDate!"
+    [minDate]="props.minDate!"
+    [opened]="props.opened || false"
+    [required]="props.required || false"
+    [startAt]="props.startAt!"
+    [startDatePlaceholder]="props.startDatePlaceholder || ''"
+    [startView]="props.startView || 'month'"
+  >
+  </nuverial-date-range-picker>
+</ng-template>
+
+<ng-template #reviewTemplate>
+  <div class="field-value-container">
+    <div class="field-label">{{ props.label }}</div>
+    <div class="field-value">{{ dateControl.value?.startDate | date:"MM/dd/yyyy" || '' }} - {{ dateControl.value?.endDate | date:"MM/dd/yyyy" || ''}}</div>
+  </div>
+</ng-template>

@@ -1,0 +1,36 @@
+@use '@dsg/shared-theme/partials/variables' as themeVars;
+@use '@dsg/shared-theme/partials/functions/rem';
+@use '@dsg/shared-theme/partials/mixins' as mixins;
+
+:host {
+  display: block;
+  @include mixins.dynamicForms-styleReviewFields();
+
+  a {
+    color: var(--theme-color-link);
+    cursor: pointer;
+  }
+
+  .field-value {
+    display: flex;
+    flex-direction: row;
+
+    &.failed {
+      a {
+        color: var(--theme-color-error);
+        pointer-events: none;
+        cursor: auto;
+      }
+    }
+
+    & .field-value-failed-tooltip {
+      margin-left: rem.fromPx(5px);
+      ::ng-deep {
+        .nuverial-icon {
+          --nuverial-icon-color: var(--theme-color-error);
+          --nuverial-icon-size: 20px;
+        }
+      }
+    }
+  }
+}

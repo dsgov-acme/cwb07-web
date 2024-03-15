@@ -1,0 +1,33 @@
+<ng-container [ngSwitch]="mode">
+  <ng-container *ngSwitchCase="formStateMode.Edit" [ngTemplateOutlet]="editTemplate"></ng-container>
+  <ng-container *ngSwitchCase="formStateMode.Review" [ngTemplateOutlet]="reviewTemplate"></ng-container>
+  <ng-container *ngSwitchDefault>{{mode}} mode not implemented</ng-container>
+</ng-container>
+
+<ng-template #editTemplate>
+  <nuverial-read-only-data
+    [currencyPipeOptions]="props.currencyPipeOptions"
+    [datePipeOptions]="props.datePipeOptions"
+    [decimalPipeOptions]="props.decimalPipeOptions"
+    [formatBold]="props.formatBold"
+    [formatItalic]="props.formatItalic"
+    [formatType]="props.formatType!"
+    [label]="props.label || ''"
+    [labelBold]="props.labelBold"
+    [labelItalic]="props.labelItalic"
+    [labelSize]="props.labelSize || 'normal'"
+    [maskPattern]="props.mask!"
+    [prefix]="props.prefix || ''"
+    [suffix]="props.suffix || ''"
+    [value]="(formControl.value === null || formControl.value === undefined) ? '' : formControl.value"
+    [valuePosition]="props.valuePosition || 'right'"
+  ></nuverial-read-only-data>
+</ng-template>
+
+<ng-template #reviewTemplate>
+  <div class="field-value-container" *ngIf="!props.hideInReviewPage || !props.label">
+    <div class="field-label">{{ props.label }}</div>
+    <div class="field-value" *ngIf="formattedValue">{{ formattedValue }}</div>
+    <div class="field-value" *ngIf="!formattedValue">-</div>
+  </div>
+</ng-template>

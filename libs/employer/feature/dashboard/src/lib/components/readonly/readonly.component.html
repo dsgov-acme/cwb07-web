@@ -1,0 +1,10 @@
+<section class="readonly-transaction">
+  <ng-container *ngIf="transaction$ | async as transaction">
+    <dsg-form-renderer
+      class="readonly-transaction__form"
+      [fields$]="reviewFormFields$"
+      [model$]="formData$"
+      [options]="reviewRendererOptions"
+    ></dsg-form-renderer>
+  </ng-container>
+</section>

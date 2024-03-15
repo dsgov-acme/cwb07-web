@@ -1,0 +1,29 @@
+environment: "prod"
+
+firebase:
+  project: "cwb07-prod"
+
+net:
+  host: "agency.cwb07.dsgov.demo.nuvalence.io"
+
+environmentJSON: {
+  authenticationConfiguration: {
+    firebaseConfiguration: {
+      firebase: {
+        apiKey: "AIzaSyBbouqj9qtJXzhh8eWa9byfZOl5NGbpLu4",
+        authDomain: "cwb07-prod.dsgov.demo.nuvalence.io",
+      },
+      tenantId: 'agency-portal-4ctbg',
+    },
+    sessionExpiration: {
+      idleTimeSeconds: 1800,
+      sessionTimeSeconds: 64800,
+    },
+  },
+  googlePlacesApiConfiguration: {
+    googleApiKey: 'AIzaSyDY9cwzaT_8AkXc2nQh7N61qsQ3Lpbqf_w',
+  },
+  httpConfiguration: {
+    baseUrl: "https://api.cwb07.dsgov.demo.nuvalence.io",
+  },
+}
